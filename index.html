@@ -19,6 +19,55 @@
   table {
     margin: 5rem auto;
   }
+  
+  /* Game over message styling */
+  h2 {
+    animation: slideIn 0.5s ease-out;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    margin: 2rem auto;
+    max-width: 500px;
+  }
+  
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Play again button styling */
+  #play-again {
+    padding: 0.75rem 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-weight: bold;
+  }
+  
+  #play-again:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  }
+  
+  #play-again:active {
+    transform: scale(0.95);
+  }
+  
+  #play-again:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.5);
+  }
+  
   @media (prefers-color-scheme: dark) {
     body,
     input {
@@ -48,7 +97,7 @@
   </tr>
 </table>
 
-<h2 hidden>Game over, refresh to play again 🧑‍💻 🤖!</h2>
+<h2 hidden>Game over!</h2>
 <button id="play-again" hidden>Play again</button>
 
 <script>
@@ -146,19 +195,26 @@
     );
   }
 
-  // Display game over, cancel events
+  // Display game over with friendly message
   function endGame(result) {
+    let message = "Game over! ";
+    
     if (result === "draw") {
-      gameOver.textContent = "Game over, refresh to play again 🧑‍💻 🤖!: Draw";
+      message += "It's a draw! 🤝";
     } else if (result === "human") {
-      gameOver.textContent = "Game over, refresh to play again 🧑‍💻 🤖!: You win";
+      message += "You win! 🎉";
     } else if (result === "robot") {
-      gameOver.textContent = "Game over, refresh to play again 🧑‍💻 🤖!: Robot wins";
+      message += "Robot wins! 🤖";
     }
+    
+    gameOver.textContent = message;
     gameOver.hidden = false;
     playAgainBtn.hidden = false;
+    
     // Move focus to the button for quick replay
     playAgainBtn.focus();
+    
+    // Remove click listeners and inputs
     for (const input of inputs) {
       input.removeEventListener("click", handleClickInput);
       input.remove();
